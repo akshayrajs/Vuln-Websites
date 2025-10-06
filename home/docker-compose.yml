@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: joomla_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: joomladb
+      MYSQL_USER: joomla
+      MYSQL_PASSWORD: joomla123
+    volumes:
+      - ./db_data:/var/lib/mysql
+    networks:
+      - joomlanet
+
+  web:
+    build:
+      context: ./joomla      # Path to the folder with Dockerfile
+      dockerfile: Dockerfile
+    container_name: joomla_web
+    ports:
+      - "8081:80"
+    volumes:
+      - ./joomla:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - joomlanet
+    restart: always
+    environment:
+      JOOMLA_DB_HOST: db
+      JOOMLA_DB_USER: joomla
+      JOOMLA_DB_PASS: joomla123
+      JOOMLA_DB_NAME: joomladb
+
+networks:
+  joomlanet:
