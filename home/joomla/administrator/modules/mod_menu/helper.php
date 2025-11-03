@@ -26,7 +26,7 @@ abstract class ModMenuHelper
 	public static function getMenus()
 	{
 		$db     = JFactory::getDbo();
-		$query = $db->getQuery(true)
+		$query	= $db->getQuery(true)
 			->select('a.*, SUM(b.home) AS home')
 			->from('#__menu_types AS a')
 			->join('LEFT', '#__menu AS b ON b.menutype = a.menutype AND b.home != 0')
@@ -42,15 +42,7 @@ abstract class ModMenuHelper
 
 		$db->setQuery($query);
 
-		try
-		{
-			$result = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			$result = array();
-			JFactory::getApplication()->enqueueMessage(JText::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
-		}
+		$result = $db->loadObjectList();
 
 		return $result;
 	}
@@ -88,15 +80,7 @@ abstract class ModMenuHelper
 		$db->setQuery($query);
 
 		// Component list
-		try
-		{
-			$components = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			$components = array();
-			JFactory::getApplication()->enqueueMessage(JText::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
-		}
+		$components = $db->loadObjectList();
 
 		// Parse the list of extensions.
 		foreach ($components as &$component)

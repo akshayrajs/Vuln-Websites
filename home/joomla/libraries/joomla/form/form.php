@@ -235,12 +235,22 @@ class JForm
 			$groups = array_map('strval', $attrs ? $attrs : array());
 			$group = implode('.', $groups);
 
-			$key = $group ? $group . '.' . $name : $name;
-
-			// Filter the value if it exists.
-			if ($input->exists($key))
+			// Get the field value from the data input.
+			if ($group)
 			{
-				$output->set($key, $this->filterField($field, $input->get($key, (string) $field['default'])));
+				// Filter the value if it exists.
+				if ($input->exists($group . '.' . $name))
+				{
+					$output->set($group . '.' . $name, $this->filterField($field, $input->get($group . '.' . $name, (string) $field['default'])));
+				}
+			}
+			else
+			{
+				// Filter the value if it exists.
+				if ($input->exists($name))
+				{
+					$output->set($name, $this->filterField($field, $input->get($name, (string) $field['default'])));
+				}
 			}
 		}
 
@@ -525,9 +535,9 @@ class JForm
 		foreach ($elements as $element)
 		{
 			// Get the field groups for the element.
-			$attrs  = $element->xpath('ancestor::fields[@name]/@name');
-			$groups = array_map('strval', $attrs ? $attrs : array());
-			$group  = implode('.', $groups);
+			$attrs	= $element->xpath('ancestor::fields[@name]/@name');
+			$groups	= array_map('strval', $attrs ? $attrs : array());
+			$group	= implode('.', $groups);
 
 			// If the field is successfully loaded add it to the result array.
 			if ($field = $this->loadField($element, $group))
@@ -807,7 +817,7 @@ class JForm
 					{
 						$olddom = dom_import_simplexml($current);
 						$loadeddom = dom_import_simplexml($field);
-						$addeddom = $olddom->ownerDocument->importNode($loadeddom, true);
+						$addeddom = $olddom->ownerDocument->importNode($loadeddom);
 						$olddom->parentNode->replaceChild($addeddom, $olddom);
 						$loadeddom->parentNode->removeChild($loadeddom);
 					}
@@ -872,7 +882,7 @@ class JForm
 	 * @param   string  $name   The name of the form field for which remove.
 	 * @param   string  $group  The optional dot-separated form group path on which to find the field.
 	 *
-	 * @return  boolean  True on success, false otherwise.
+	 * @return  boolean  True on success.
 	 *
 	 * @since   11.1
 	 * @throws  UnexpectedValueException
@@ -893,11 +903,9 @@ class JForm
 		{
 			$dom = dom_import_simplexml($element);
 			$dom->parentNode->removeChild($dom);
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -905,7 +913,7 @@ class JForm
 	 *
 	 * @param   string  $group  The dot-separated form group path for the group to remove.
 	 *
-	 * @return  boolean  True on success, false otherwise.
+	 * @return  boolean  True on success.
 	 *
 	 * @since   11.1
 	 * @throws  UnexpectedValueException
@@ -925,11 +933,9 @@ class JForm
 		{
 			$dom = dom_import_simplexml($element);
 			$dom->parentNode->removeChild($dom);
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -2123,7 +2129,7 @@ class JForm
 	protected static function addNode(SimpleXMLElement $source, SimpleXMLElement $new)
 	{
 		// Add the new child node.
-		$node = $source->addChild($new->getName(), htmlspecialchars(trim($new)));
+		$node = $source->addChild($new->getName(), trim($new));
 
 		// Add the attributes of the child node.
 		foreach ($new->attributes() as $name => $value)

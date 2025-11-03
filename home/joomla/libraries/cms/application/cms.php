@@ -159,7 +159,6 @@ class JApplicationCms extends JApplicationWeb
 	 * @return  void
 	 *
 	 * @since   3.2
-	 * @throws  RuntimeException
 	 */
 	public function checkSession()
 	{
@@ -209,7 +208,7 @@ class JApplicationCms extends JApplicationWeb
 			}
 			catch (RuntimeException $e)
 			{
-				throw new RuntimeException(JText::_('JERROR_SESSION_STARTUP'));
+				jexit($e->getMessage());
 			}
 		}
 	}

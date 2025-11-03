@@ -55,3 +55,4 @@ function modChrome_well($module, &$params, &$attribs)
 		echo '</' . $moduleTag . '>';
 	}
 }
+?>

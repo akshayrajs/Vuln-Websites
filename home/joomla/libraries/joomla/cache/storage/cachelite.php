@@ -74,10 +74,7 @@ class JCacheStorageCachelite extends JCacheStorage
 	 */
 	protected function initCache($cloptions)
 	{
-		if (!class_exists('Cache_Lite'))
-		{
-			require_once 'Cache/Lite.php';
-		}
+		require_once 'Cache/Lite.php';
 
 		self::$CacheLiteInstance = new Cache_Lite($cloptions);
 
@@ -329,6 +326,13 @@ class JCacheStorageCachelite extends JCacheStorage
 	{
 		@include_once 'Cache/Lite.php';
 
-		return class_exists('Cache_Lite');
+		if (class_exists('Cache_Lite'))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

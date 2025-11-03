@@ -2,7 +2,7 @@
 /**
  * @package     FrameworkOnFramework
  * @subpackage  toolbar
- * @copyright   Copyright (C) 2010 - 2015 Nicholas K. Dionysopoulos / Akeeba Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2014 Akeeba Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
@@ -207,15 +207,7 @@ class FOFToolbar
                 if(!FOFPlatform::getInstance()->isCli())
                 {
                     // Load the core Javascript
-	                if (version_compare(JVERSION, '3.0', 'ge'))
-	                {
-		                JHtml::_('jquery.framework');
-		                JHtml::_('behavior.core');
-	                }
-	                else
-	                {
-		                JHtml::_('behavior.framework');
-	                }
+                    JHtml::_('behavior.framework', true);
                 }
 			}
 		}

@@ -59,19 +59,7 @@ class LoginController extends JControllerLegacy
 
 		if (!($result instanceof Exception))
 		{
-			// Only redirect to an internal URL.
-			if (JUri::isInternal($return))
-			{
-				// If &tmpl=component - redirect to index.php
-				if (strpos($return, "tmpl=component") === false)
-				{
-					$app->redirect($return);
-				}
-				else
-				{
-					$app->redirect('index.php');
-				}
-			}
+			$app->redirect($return);
 		}
 
 		parent::display();
@@ -98,14 +86,9 @@ class LoginController extends JControllerLegacy
 
 		if (!($result instanceof Exception))
 		{
-			$model  = $this->getModel('login');
+			$model 	= $this->getModel('login');
 			$return = $model->getState('return');
-
-			// Only redirect to an internal URL.
-			if (JUri::isInternal($return))
-			{
-				$app->redirect($return);
-			}
+			$app->redirect($return);
 		}
 
 		parent::display();

@@ -56,8 +56,9 @@ class PlgCaptchaRecaptcha extends JPlugin
 		{
 			case '1.0':
 				$theme = $this->params->get('theme', 'clean');
-				$file  = 'https://www.google.com/recaptcha/api/js/recaptcha_ajax.js';
 
+				$file = $app->isSSLConnection() ? 'https' : 'http';
+				$file .= '://www.google.com/recaptcha/api/js/recaptcha_ajax.js';
 				JHtml::_('script', $file);
 
 				$document->addScriptDeclaration('jQuery( document ).ready(function()
@@ -67,13 +68,16 @@ class PlgCaptchaRecaptcha extends JPlugin
 				break;
 			case '2.0':
 				$theme = $this->params->get('theme2', 'light');
-				$file  = 'https://www.google.com/recaptcha/api.js?hl=' . JFactory::getLanguage()->getTag() . '&amp;render=explicit';
+
+				$file = $app->isSSLConnection() ? 'https' : 'http';
+				$file .= '://www.google.com/recaptcha/api.js?hl=' . JFactory::getLanguage()
+						->getTag() . '&onload=onloadCallback&render=explicit';
 
 				JHtml::_('script', $file, true, true);
 
-				$document->addScriptDeclaration('jQuery(document).ready(function($) {$(window).load(function() {'
+				$document->addScriptDeclaration('var onloadCallback = function() {'
 					. 'grecaptcha.render("' . $id . '", {sitekey: "' . $pubkey . '", theme: "' . $theme . '"});'
-					. '});});'
+					. '}'
 				);
 				break;
 		}
@@ -84,7 +88,7 @@ class PlgCaptchaRecaptcha extends JPlugin
 	/**
 	 * Gets the challenge HTML
 	 *
-	 * @param   string  $name   The name of the field. Not Used.
+	 * @param   string  $name   The name of the field.
 	 * @param   string  $id     The id of the field.
 	 * @param   string  $class  The class of the field. This should be passed as
 	 *                          e.g. 'class="required"'.
@@ -93,7 +97,7 @@ class PlgCaptchaRecaptcha extends JPlugin
 	 *
 	 * @since  2.5
 	 */
-	public function onDisplay($name = null, $id = 'dynamic_recaptcha_1', $class = '')
+	public function onDisplay($name, $id = 'dynamic_recaptcha_1', $class = '')
 	{
 		return '<div id="' . $id . '" ' . $class . '></div>';
 	}
@@ -101,13 +105,13 @@ class PlgCaptchaRecaptcha extends JPlugin
 	/**
 	 * Calls an HTTP POST function to verify if the user's guess was correct
 	 *
-	 * @param   string  $code  Answer provided by user. Not needed for the Recaptcha implementation
+	 * @param   string  $code  Answer provided by user.
 	 *
 	 * @return  True if the answer is correct, false otherwise
 	 *
 	 * @since  2.5
 	 */
-	public function onCheckAnswer($code = null)
+	public function onCheckAnswer($code)
 	{
 		$input      = JFactory::getApplication()->input;
 		$privatekey = $this->params->get('private_key');
@@ -122,10 +126,8 @@ class PlgCaptchaRecaptcha extends JPlugin
 				$spam      = ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0);
 				break;
 			case '2.0':
-				// Challenge Not needed in 2.0 but needed for getResponse call
-				$challenge = null;
-				$response  = $input->get('g-recaptcha-response', '', 'string');
-				$spam      = ($response == null || strlen($response) == 0);
+				$response = $input->get('g-recaptcha-response', '', 'string');
+				$spam     = ($response == null || strlen($response) == 0);
 				break;
 		}
 
@@ -162,7 +164,7 @@ class PlgCaptchaRecaptcha extends JPlugin
 	 * @param   string  $privatekey  The private key for authentication.
 	 * @param   string  $remoteip    The remote IP of the visitor.
 	 * @param   string  $response    The response received from Google.
-	 * @param   string  $challenge   The challenge field from the reCaptcha. Only for 1.0.
+	 * @param   string  $challenge   The challenge field from the reCaptcha.
 	 *
 	 * @return bool True if response is good | False if response is bad.
 	 *

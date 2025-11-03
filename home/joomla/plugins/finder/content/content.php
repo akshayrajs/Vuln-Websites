@@ -4,10 +4,10 @@
  * @subpackage  Finder.Content
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('_JEXEC') or die;
+defined('JPATH_BASE') or die;
 
 use Joomla\Registry\Registry;
 
@@ -266,7 +266,7 @@ class PlgFinderContent extends FinderIndexerAdapter
 		$item->body = FinderIndexerHelper::prepareContent($item->body, $item->params);
 
 		// Build the necessary route and path information.
-		$item->url = $this->getUrl($item->id, $this->extension, $this->layout);
+		$item->url = $this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language);
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
 

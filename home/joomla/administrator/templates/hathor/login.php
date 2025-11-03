@@ -13,9 +13,6 @@ $app  = JFactory::getApplication();
 $lang = JFactory::getLanguage();
 $doc  = JFactory::getDocument();
 
-// jQuery needed by template.js
-JHtml::_('jquery.framework');
-
 JHtml::_('behavior.noframes');
 
 // Load optional RTL Bootstrap CSS
@@ -129,18 +126,8 @@ else
 	<!-- Footer -->
 	<div id="footer">
 		<p class="copyright">
-			<?php
-			// Fix wrong display of Joomla!® in RTL language
-			if (JFactory::getLanguage()->isRtl())
-			{
-				$joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!</a><sup>&#174;&#x200E;</sup>';
-			}
-			else
-			{
-				$joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!</a><sup>&#174;</sup>';
-			}
-			echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla);
-			?>
+			<?php $joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!&#174;</a>';
+			echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla); ?>
 		</p>
 	</div>
 </body>

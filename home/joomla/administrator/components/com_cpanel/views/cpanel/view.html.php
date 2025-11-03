@@ -53,18 +53,8 @@ class CpanelViewCpanel extends JViewLegacy
 			require_once JPATH_LIBRARIES . '/fof/include.php';
 		}
 
-		try
-		{
-			$messages_model = FOFModel::getTmpInstance('Messages', 'PostinstallModel')->eid(700);
-			$messages       = $messages_model->getItemList();
-		}
-		catch (RuntimeException $e)
-		{
-			$messages = array();
-
-			// Still render the error message from the Exception object
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-		}
+		$messages_model = FOFModel::getTmpInstance('Messages', 'PostinstallModel')->eid(700);
+		$messages = $messages_model->getItemList();
 
 		$this->postinstall_message_count = count($messages);
 

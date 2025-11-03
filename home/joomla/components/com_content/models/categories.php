@@ -34,6 +34,8 @@ class ContentModelCategories extends JModelList
 
 	private $_parent = null;
 
+	private $_items = null;
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -95,9 +97,7 @@ class ContentModelCategories extends JModelList
 	 */
 	public function getItems($recursive = false)
 	{
-		$store = $this->getStoreId();
-
-		if (!isset($this->cache[$store]))
+		if (!count($this->_items))
 		{
 			$app = JFactory::getApplication();
 			$menu = $app->getMenu();
@@ -116,15 +116,15 @@ class ContentModelCategories extends JModelList
 
 			if (is_object($this->_parent))
 			{
-				$this->cache[$store] = $this->_parent->getChildren($recursive);
+				$this->_items = $this->_parent->getChildren($recursive);
 			}
 			else
 			{
-				$this->cache[$store] = false;
+				$this->_items = false;
 			}
 		}
 
-		return $this->cache[$store];
+		return $this->_items;
 	}
 
 	/**

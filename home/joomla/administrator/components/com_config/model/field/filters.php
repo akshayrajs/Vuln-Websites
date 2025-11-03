@@ -99,7 +99,6 @@ class JFormFieldFilters extends JFormField
 			$html[] = '		<td>';
 			$html[] = '				<input'
 				. ' name="' . $this->name . '[' . $group->value . '][filter_tags]"'
-				. ' type="text"'
 				. ' id="' . $this->id . $group->value . '_filter_tags"'
 				. ' title="' . JText::_('JGLOBAL_FILTER_TAGS_LABEL') . '"'
 				. ' value="' . $group_filter['filter_tags'] . '"'
@@ -108,7 +107,6 @@ class JFormFieldFilters extends JFormField
 			$html[] = '		<td>';
 			$html[] = '				<input'
 				. ' name="' . $this->name . '[' . $group->value . '][filter_attributes]"'
-				. ' type="text"'
 				. ' id="' . $this->id . $group->value . '_filter_attributes"'
 				. ' title="' . JText::_('JGLOBAL_FILTER_ATTRIBUTES_LABEL') . '"'
 				. ' value="' . $group_filter['filter_attributes'] . '"'
@@ -142,7 +140,7 @@ class JFormFieldFilters extends JFormField
 	protected function getUserGroups()
 	{
 		// Get a database object.
-		$db = JFactory::getDbo();
+		$db = JFactory::getDBO();
 
 		// Get the user groups from the database.
 		$query = $db->getQuery(true);

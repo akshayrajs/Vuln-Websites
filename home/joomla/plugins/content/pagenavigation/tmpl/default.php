@@ -13,18 +13,18 @@ $lang = JFactory::getLanguage(); ?>
 
 <ul class="pager pagenav">
 <?php if ($row->prev) :
-	$direction = $lang->isRtl() ? 'right' : 'left'; ?>
+	$direction = $lang->isRTL() ? 'right' : 'left'; ?>
 	<li class="previous">
 		<a href="<?php echo $row->prev; ?>" rel="prev">
-			<?php echo '<span class="icon-chevron-' . $direction . '"></span> ' . $row->prev_label; ?>
+			<?php echo '<i class="icon-chevron-' . $direction . '"></i> ' . $row->prev_label; ?>
 		</a>
 	</li>
 <?php endif; ?>
 <?php if ($row->next) :
-	$direction = $lang->isRtl() ? 'left' : 'right'; ?>
+	$direction = $lang->isRTL() ? 'left' : 'right'; ?>
 	<li class="next">
 		<a href="<?php echo $row->next; ?>" rel="next">
-			<?php echo $row->next_label . ' <span class="icon-chevron-' . $direction . '"></span>'; ?>
+			<?php echo $row->next_label . ' <i class="icon-chevron-' . $direction . '"></i>'; ?>
 		</a>
 	</li>
 <?php endif; ?>

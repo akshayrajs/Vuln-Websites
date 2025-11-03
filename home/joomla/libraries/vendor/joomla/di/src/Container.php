@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework DI Package
  *
- * @copyright  Copyright (C) 2013 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2013 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -184,7 +184,6 @@ class Container
 	 */
 	public function extend($key, \Closure $callable)
 	{
-		$key = $this->resolveAlias($key);
 		$raw = $this->getRaw($key);
 
 		if (is_null($raw))
@@ -337,7 +336,6 @@ class Container
 	 */
 	public function get($key, $forceNew = false)
 	{
-		$key = $this->resolveAlias($key);
 		$raw = $this->getRaw($key);
 
 		if (is_null($raw))
@@ -369,8 +367,6 @@ class Container
 	 */
 	public function exists($key)
 	{
-		$key = $this->resolveAlias($key);
-
 		return (bool) $this->getRaw($key);
 	}
 
@@ -385,6 +381,8 @@ class Container
 	 */
 	protected function getRaw($key)
 	{
+		$key = $this->resolveAlias($key);
+
 		if (isset($this->dataStore[$key]))
 		{
 			return $this->dataStore[$key];
@@ -415,7 +413,7 @@ class Container
 	/**
 	 * Register a service provider to the container.
 	 *
-	 * @param   ServiceProviderInterface  $provider  The service provider to register.
+	 * @param   ServiceProviderInterface  $provider  The service provider to register.w
 	 *
 	 * @return  Container  This object for chaining.
 	 *

@@ -38,15 +38,6 @@ abstract class ModLoginHelper
 			}
 		);
 
-		// Fix wrongly set parentheses in RTL languages
-		if (JFactory::getLanguage()->isRtl())
-		{
-			foreach ($languages as &$language)
-			{
-				$language['text'] = $language['text'] . '&#x200E;';
-			}
-		}
-
 		array_unshift($languages, JHtml::_('select.option', '', JText::_('JDEFAULTLANGUAGE')));
 
 		return JHtml::_('select.genericlist', $languages, 'lang', ' class="advancedSelect"', 'value', 'text', null);
@@ -57,7 +48,7 @@ abstract class ModLoginHelper
 	 *
 	 * @return  string
 	 */
-	public static function getReturnUri()
+	public static function getReturnURI()
 	{
 		$uri    = JUri::getInstance();
 		$return = 'index.php' . $uri->toString(array('query'));

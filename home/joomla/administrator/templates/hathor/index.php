@@ -15,9 +15,6 @@ $lang  = JFactory::getLanguage();
 $input = $app->input;
 $user  = JFactory::getUser();
 
-// jQuery needed by template.js
-JHtml::_('jquery.framework');
-
 // Load optional RTL Bootstrap CSS
 JHtml::_('bootstrap.loadCss', false, $this->direction);
 
@@ -38,14 +35,6 @@ else
 }
 
 $doc->addStyleSheetVersion($this->baseurl . '/templates/' . $this->template . '/css/colour_' . $colour . '.css');
-
-// Load custom.css
-$file = 'templates/' . $this->template . '/css/custom.css';
-
-if (is_file($file))
-{
-	$doc->addStyleSheetVersion($file);
-}
 
 // Load specific language related CSS
 $file = 'language/' . $lang->getTag() . '/' . $lang->getTag() . '.css';
@@ -166,20 +155,10 @@ else
 </div><!-- end of containerwrap -->
 <!-- Footer -->
 <div id="footer">
-	<jdoc:include type="modules" name="footer" style="none" />
+	<jdoc:include type="modules" name="footer" style="none"  />
 	<p class="copyright">
-		<?php
-		// Fix wrong display of Joomla!® in RTL language
-		if (JFactory::getLanguage()->isRtl())
-		{
-			$joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!</a><sup>&#174;&#x200E;</sup>';
-		}
-		else
-		{
-			$joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!</a><sup>&#174;</sup>';
-		}
-		echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla);
-		?>
+		<?php $joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!&#174;</a>';
+			echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla); ?>
 	</p>
 </div>
 <script type="text/javascript">

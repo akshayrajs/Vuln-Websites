@@ -171,24 +171,6 @@ class JLog
 			self::setInstance(new JLog);
 		}
 
-		self::$instance->addLoggerInternal($options, $priorities, $categories, $exclude);
-	}
-
-	/**
-	 * Add a logger to the JLog instance.  Loggers route log entries to the correct files/systems to be logged.
-	 * This method allows you to extend JLog completely.
-	 *
-	 * @param   array    $options     The object configuration array.
-	 * @param   integer  $priorities  Message priority
-	 * @param   array    $categories  Types of entry
-	 * @param   boolean  $exclude     If true, all categories will be logged except those in the $categories array
-	 *
-	 * @return  void
-	 *
-	 * @since   11.1
-	 */
-	protected function addLoggerInternal(array $options, $priorities = self::ALL, $categories = array(), $exclude = false)
-	{
 		// The default logger is the formatted text log file.
 		if (empty($options['logger']))
 		{
@@ -215,12 +197,12 @@ class JLog
 		}
 
 		// Register the configuration if it doesn't exist.
-		if (empty($this->configurations[$signature]))
+		if (empty(self::$instance->configurations[$signature]))
 		{
-			$this->configurations[$signature] = $options;
+			self::$instance->configurations[$signature] = $options;
 		}
 
-		$this->lookup[$signature] = (object) array(
+		self::$instance->lookup[$signature] = (object) array(
 			'priorities' => $priorities,
 			'categories' => array_map('strtolower', (array) $categories),
 			'exclude' => (bool) $exclude);

@@ -67,10 +67,9 @@ class PlgEditorCodemirror extends JPlugin
 		$done = true;
 
 		JHtml::_('behavior.framework');
-		JHtml::_('script', $this->basePath . 'lib/codemirror.min.js');
-		JHtml::_('script', $this->basePath . 'lib/addons.min.js');
-		JHtml::_('stylesheet', $this->basePath . 'lib/codemirror.min.css');
-		JHtml::_('stylesheet', $this->basePath . 'lib/addons.min.css');
+		JHtml::_('script', $this->basePath . 'lib/codemirror.js');
+		JHtml::_('script', $this->basePath . 'lib/addons.js');
+		JHtml::_('stylesheet', $this->basePath . 'lib/codemirror.css');
 
 		JFactory::getDocument()
 			->addScriptDeclaration($this->getInitScript())
@@ -90,8 +89,7 @@ class PlgEditorCodemirror extends JPlugin
 		$fskeys[] = $this->params->get('fullScreen', 'F10');
 		$this->fullScreenCombo = implode('-', $fskeys);
 
-		$ext = JFactory::getConfig()->get('debug') ? '.js' : '.min.js';
-		$modeURL = JUri::root(true) . '/media/editors/codemirror/mode/%N/%N' . $ext;
+		$modeURL = JURI::root(true) . '/media/editors/codemirror/mode/%N/%N.js';
 
 		$script = array(
 			';(function (cm) {',
@@ -120,8 +118,7 @@ class PlgEditorCodemirror extends JPlugin
 	protected function getExtraStyles()
 	{
 		// Get our custom styles from a css file
-		$filename = JFactory::getConfig()->get('debug') ? 'styles.css' : 'styles.min.css';
-		$styles = JFile::read(__DIR__ . '/' . $filename);
+		$styles = JFile::read(__DIR__ . (JDEBUG ? '/styles.css' : '/styles.min.css'));
 
 		// Set the active line color.
 		$color = $this->params->get('activeLineColor', '#a4c2eb');
@@ -236,7 +233,7 @@ class PlgEditorCodemirror extends JPlugin
 		$options = new stdClass;
 
 		// Should we focus on the editor on load?
-		$options->autofocus = (boolean) $this->params->get('autoFocus', true);
+		$options->autofocus	= (boolean) $this->params->get('autoFocus', true);
 
 		// Until there's a fix for the overflow problem, always wrap lines.
 		$options->lineWrapping = true;
@@ -299,8 +296,8 @@ class PlgEditorCodemirror extends JPlugin
 		$options->vimMode = (boolean) $this->params->get('vimKeyBinding', 0);
 
 		$html = array();
-		$html[] = '<p class="label">' . JText::sprintf('PLG_CODEMIRROR_TOGGLE_FULL_SCREEN', $this->fullScreenCombo) . '</p>';
-		$html[] = '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '">' . $content . '</textarea>';
+		$html[]	= '<p class="label">' . JText::sprintf('PLG_CODEMIRROR_TOGGLE_FULL_SCREEN', $this->fullScreenCombo) . '</p>';
+		$html[]	= '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '">' . $content . '</textarea>';
 		$html[] = $buttons;
 		$html[] = '<script type="text' . '/javascript">';
 		$html[] = '(function (id, options) {';

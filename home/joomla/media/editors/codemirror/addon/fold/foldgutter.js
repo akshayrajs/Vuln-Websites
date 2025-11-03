@@ -52,7 +52,7 @@
   function isFolded(cm, line) {
     var marks = cm.findMarksAt(Pos(line));
     for (var i = 0; i < marks.length; ++i)
-      if (marks[i].__isFold && marks[i].find().from.line == line) return marks[i];
+      if (marks[i].__isFold && marks[i].find().from.line == line) return true;
   }
 
   function marker(spec) {
@@ -94,28 +94,20 @@
   }
 
   function onGutterClick(cm, line, gutter) {
-    var state = cm.state.foldGutter;
-    if (!state) return;
-    var opts = state.options;
+    var opts = cm.state.foldGutter.options;
     if (gutter != opts.gutter) return;
-    var folded = isFolded(cm, line);
-    if (folded) folded.clear();
-    else cm.foldCode(Pos(line, 0), opts.rangeFinder);
+    cm.foldCode(Pos(line, 0), opts.rangeFinder);
   }
 
   function onChange(cm) {
-    var state = cm.state.foldGutter;
-    if (!state) return;
-    var opts = state.options;
+    var state = cm.state.foldGutter, opts = cm.state.foldGutter.options;
     state.from = state.to = 0;
     clearTimeout(state.changeUpdate);
     state.changeUpdate = setTimeout(function() { updateInViewport(cm); }, opts.foldOnChangeTimeSpan || 600);
   }
 
   function onViewportChange(cm) {
-    var state = cm.state.foldGutter;
-    if (!state) return;
-    var opts = state.options;
+    var state = cm.state.foldGutter, opts = cm.state.foldGutter.options;
     clearTimeout(state.changeUpdate);
     state.changeUpdate = setTimeout(function() {
       var vp = cm.getViewport();
@@ -137,9 +129,7 @@
   }
 
   function onFold(cm, from) {
-    var state = cm.state.foldGutter;
-    if (!state) return;
-    var line = from.line;
+    var state = cm.state.foldGutter, line = from.line;
     if (line >= state.from && line < state.to)
       updateFoldInfo(cm, line, line + 1);
   }

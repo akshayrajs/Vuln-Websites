@@ -49,6 +49,7 @@ class JPathwaySite extends JPathway
 			{
 				foreach ($item->tree as $menupath)
 				{
+					$url = '';
 					$link = $menu->getItem($menupath);
 
 					switch ($link->type)
@@ -76,7 +77,16 @@ class JPathwaySite extends JPathway
 							break;
 
 						default:
-							$url = $link->link . '&Itemid=' . $link->id;
+							$router = $app::getRouter();
+
+							if ($router->getMode() == JROUTER_MODE_SEF)
+							{
+								$url = 'index.php?Itemid=' . $link->id;
+							}
+							else
+							{
+								$url .= $link->link . '&Itemid=' . $link->id;
+							}
 							break;
 					}
 

@@ -151,18 +151,8 @@ else
 	<div id="footer">
 		<jdoc:include type="modules" name="footer" style="none"  />
 		<p class="copyright">
-			<?php
-			// Fix wrong display of Joomla!® in RTL language
-			if (JFactory::getLanguage()->isRtl())
-			{
-				$joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!</a><sup>&#174;&#x200E;</sup>';
-			}
-			else
-			{
-				$joomla = '<a href="http://www.joomla.org" target="_blank">Joomla!</a><sup>&#174;</sup>';
-			}
-			echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla);
-			?>
+			<?php $joomla = '<a href="http://www.joomla.org">Joomla!&#174;</a>';
+			echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla); ?>
 		</p>
 	</div>
 </body>

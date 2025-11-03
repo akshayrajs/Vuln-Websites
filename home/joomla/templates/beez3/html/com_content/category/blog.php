@@ -21,16 +21,15 @@ $cparams = JComponentHelper::getParams('com_media');
 // It will be a separate class if the user starts it with a space
 ?>
 <section class="blog<?php echo $this->pageclass_sfx;?>">
-<?php if ($this->params->get('show_page_heading') != 0) : ?>
+<?php if ($this->params->get('show_page_heading') != 0 or $this->params->get('show_category_title')) : ?>
 <h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
+	<?php if ($this->params->get('show_category_title'))
+	{
+		echo '<span class="subheading-category">'.JHtml::_('content.prepare', $this->category->title, '', 'com_content.category.title').'</span>';
+	}
+	?>
 </h1>
-<?php endif; ?>
-
-<?php if ($this->params->get('show_category_title')) : ?>
-<h2 class="subheading-category">
-	<?php echo JHtml::_('content.prepare', $this->category->title, '', 'com_content.category.title'); ?>
-</h2>
 <?php endif; ?>
 
 <?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
@@ -101,7 +100,7 @@ $cparams = JComponentHelper::getParams('com_media');
 
 	<?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
 		<h3>
-			<?php echo JText::_('JGLOBAL_SUBCATEGORIES'); ?>
+			<?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?>
 		</h3>
 	<?php endif; ?>
 	<?php echo $this->loadTemplate('children'); ?>

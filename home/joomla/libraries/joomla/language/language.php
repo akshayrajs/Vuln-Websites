@@ -923,7 +923,14 @@ class JLanguage
 			// Check if we encountered any errors.
 			if (count($errors))
 			{
-				$this->errorfiles[$filename] = $filename . ' : error(s) in line(s) ' . implode(', ', $errors);
+				if (basename($filename) != $this->lang . '.ini')
+				{
+					$this->errorfiles[$filename] = $filename . JText::sprintf('JERROR_PARSING_LANGUAGE_FILE', implode(', ', $errors));
+				}
+				else
+				{
+					$this->errorfiles[$filename] = $filename . '&#160;: error(s) in line(s) ' . implode(', ', $errors);
+				}
 			}
 			elseif ($php_errormsg)
 			{
@@ -1070,7 +1077,7 @@ class JLanguage
 	 *
 	 * @since   11.1
 	 */
-	public function isRtl()
+	public function isRTL()
 	{
 		return (bool) $this->metadata['rtl'];
 	}

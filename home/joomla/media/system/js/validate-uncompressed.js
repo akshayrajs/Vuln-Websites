@@ -41,20 +41,20 @@ var JFormValidator = function() {
  	handleResponse = function(state, $el) {
  		// Get a label
  	 	var $label = $el.data('label');
- 	 	if ($label === undefined) {
- 	 		$label = findLabel($el.attr('id'), $el.get(0).form);
+ 	 	if($label === undefined){
+ 	 		$label = findLabel($el.attr('id'), $el.data('form'));
  	 		$el.data('label', $label);
  	 	}
 
  	 	// Set the element and its label (if exists) invalid state
  	 	if (state === false) {
  	 	 	$el.addClass('invalid').attr('aria-invalid', 'true');
- 	 	 	if ($label) {
+ 	 	 	if($label){
  	 	 	 	$label.addClass('invalid').attr('aria-invalid', 'true');
  	 	 	}
  	 	} else {
  	 	 	$el.removeClass('invalid').attr('aria-invalid', 'false');
- 	 	 	if ($label) {
+ 	 	 	if($label){
  	 	 	 	$label.removeClass('invalid').attr('aria-invalid', 'false');
  	 	 	}
  	 	}
@@ -101,29 +101,29 @@ var JFormValidator = function() {
  	},
 
  	isValid = function(form) {
- 		var fields, valid = true, message, error, label, invalid = [], i, l;
+ 	 	var valid = true, i, message, errors, error, label;
  	 	// Validate form fields
- 	 	fields = jQuery(form).find('input, textarea, select, fieldset');
- 	 	for (i = 0, l = fields.length; i < l; i++) {
- 	 	 	if (validate(fields[i]) === false) {
+ 	 	jQuery.each(jQuery(form).find('input, textarea, select, fieldset, button'), function(index, el) {
+ 	 	 	if (validate(el) === false) {
  	 	 	 	valid = false;
- 	 	 	 	invalid.push(fields[i]);
  	 	 	}
- 	 	}
+ 	 	});
  	 	// Run custom form validators if present
  	 	jQuery.each(custom, function(key, validator) {
  	 	 	if (validator.exec() !== true) {
  	 	 	 	valid = false;
  	 	 	}
  	 	});
- 	 	if (!valid && invalid.length > 0) {
+ 	 	if (!valid) {
  	 	 	message = Joomla.JText._('JLIB_FORM_FIELD_INVALID');
- 	 	 	error = {"error": []};
- 	 	 	for (i = invalid.length - 1; i >= 0; i--) {
- 	 	 		label = jQuery(invalid[i]).data("label");
- 	 			if (label) {
- 	 	 			error.error.push(message + label.text().replace("*", ""));
-                		}
+ 	 	 	errors = jQuery("input.invalid, textarea.invalid, select.invalid, fieldset.invalid, button.invalid");
+ 	 	 	error = {};
+ 	 	 	error.error = [];
+ 	 	 	for ( i = 0; i < errors.length; i++) {
+ 	 	 	 	label = jQuery('label[for=' + errors[i].id + ']').text();
+ 	 	 	 	if (label !== 'undefined') {
+ 	 	 	 	 	error.error[i] = message + label.replace("*", "");
+ 	 	 	 	}
  	 	 	}
  	 	 	Joomla.renderMessages(error);
  	 	}
@@ -131,25 +131,21 @@ var JFormValidator = function() {
  	},
 
  	attachToForm = function(form) {
- 	 	var inputFields = [], elements,
+ 	 	var inputFields = [],
  	 		$form = jQuery(form);
  	 	// Iterate through the form object and attach the validate method to all input fields.
- 	 	elements = $form.find('input, textarea, select, fieldset, button');
- 	 	for (var i = 0, l = elements.length; i < l; i++) {
- 	 	 	var $el = jQuery(elements[i]), tagName = $el.prop("tagName").toLowerCase();
- 	 	 	// Attach isValid method to submit button
- 	 	 	if ((tagName === 'input' || tagName === 'button') && ($el.attr('type') === 'submit' || $el.attr('type') === 'image')) {
+ 	 	$form.find('input, textarea, select, fieldset, button').each(function() {
+ 	 	 	var $el = jQuery(this), tagName = $el.prop("tagName").toLowerCase();
+ 	 	 	if ($el.hasClass('required')) {
+ 	 	 	 	$el.attr('aria-required', 'true').attr('required', 'required');
+ 	 	 	}
+ 	 	 	if ((tagName === 'input' || tagName === 'button') && $el.attr('type') === 'submit') {
  	 	 	 	if ($el.hasClass('validate')) {
  	 	 	 	 	$el.on('click', function() {
  	 	 	 	 	 	return isValid(form);
  	 	 	 	 	});
  	 	 	 	}
- 	 	 	}
- 	 	 	// Attach validate method only to fields
- 	 	 	else if (tagName !== 'button' && !(tagName === 'input' && $el.attr('type') === 'button')) {
- 	 	 	 	if ($el.hasClass('required')) {
- 	 	 	 	 	$el.attr('aria-required', 'true').attr('required', 'required');
- 	 	 	 	}
+ 	 	 	} else {
  	 	 	 	if (tagName !== 'fieldset') {
  	 	 	 	 	$el.on('blur', function() {
  	 	 	 	 	 	return validate(this);
@@ -158,9 +154,10 @@ var JFormValidator = function() {
  	 	 	 	 	 	$el.get(0).type = 'email';
  	 	 	 	 	}
  	 	 	 	}
+ 	 	 	 	$el.data('form', $form);
  	 	 	 	inputFields.push($el);
  	 	 	}
- 	 	}
+ 	 	});
  	 	$form.data('inputfields', inputFields);
  	},
 
@@ -192,10 +189,9 @@ var JFormValidator = function() {
  	 	 	return regex.test(value);
  	 	});
  	 	// Attach to forms with class 'form-validate'
- 	 	var forms = jQuery('form.form-validate');
- 	 	for (var i = 0, l = forms.length; i < l; i++) {
- 	 	 	attachToForm(forms[i]);
- 	 	}
+ 	 	jQuery('form.form-validate').each(function() {
+ 	 	 	attachToForm(this);
+ 	 	});
  	};
 
  	// Initialize handlers and attach validation to form

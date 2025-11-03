@@ -329,8 +329,9 @@ class ModulesModelModules extends JModelList
 			}
 			else
 			{
-				$search = $db->quote('%' . strtolower($search) . '%');
-				$query->where('(' . ' LOWER(a.title) LIKE ' . $search . ' OR LOWER(a.note) LIKE ' . $search . ')');
+				$escapedSearchString = $this->refineSearchStringToRegex($search, '/');
+				$search = $db->quote($escapedSearchString);
+				$query->where('(' . 'a.title REGEXP ' . $search . ' OR a.note REGEXP ' . $search . ')');
 			}
 		}
 

@@ -111,15 +111,17 @@ class JFormHelper
 
 		$class = self::loadClass($entity, $type);
 
-		if ($class === false)
+		if ($class !== false)
+		{
+			// Instantiate a new type object.
+			$types[$key] = new $class;
+
+			return $types[$key];
+		}
+		else
 		{
 			return false;
 		}
-
-		// Instantiate a new type object.
-		$types[$key] = new $class;
-
-		return $types[$key];
 	}
 
 	/**
@@ -166,11 +168,13 @@ class JFormHelper
 	 */
 	protected static function loadClass($entity, $type)
 	{
-		$prefix = 'J';
-
 		if (strpos($type, '.'))
 		{
 			list($prefix, $type) = explode('.', $type);
+		}
+		else
+		{
+			$prefix = 'J';
 		}
 
 		$class = JString::ucfirst($prefix, '_') . 'Form' . JString::ucfirst($entity, '_') . JString::ucfirst($type, '_');
@@ -207,17 +211,14 @@ class JFormHelper
 
 		foreach ($paths as $path)
 		{
-			$file = JPath::find($path, $type);
-			if (!$file)
+			if ($file = JPath::find($path, $type))
 			{
-				continue;
-			}
+				require_once $file;
 
-			require_once $file;
-
-			if (class_exists($class))
-			{
-				break;
+				if (class_exists($class))
+				{
+					break;
+				}
 			}
 		}
 

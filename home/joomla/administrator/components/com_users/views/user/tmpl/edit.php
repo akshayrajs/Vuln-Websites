@@ -59,9 +59,6 @@ $fieldsets = $this->form->getFieldsets();
 							<?php echo $field->label; ?>
 						</div>
 						<div class="controls">
-							<?php if ($field->fieldname == 'password') : ?>
-								<?php // Disables autocomplete ?> <input type="text" style="display:none">
-							<?php endif; ?>
 							<?php echo $field->input; ?>
 						</div>
 					</div>
@@ -107,7 +104,7 @@ $fieldsets = $this->form->getFieldsets();
 		<div class="control-group">
 			<div class="control-label">
 				<label id="jform_twofactor_method-lbl" for="jform_twofactor_method" class="hasTooltip"
-						title="<?php echo '<strong>' . JText::_('COM_USERS_USER_FIELD_TWOFACTOR_LABEL') . '</strong><br />' . JText::_('COM_USERS_USER_FIELD_TWOFACTOR_DESC'); ?>">
+					   title="<strong><?php echo JText::_('COM_USERS_USER_FIELD_TWOFACTOR_LABEL') ?></strong><br /><?php echo JText::_('COM_USERS_USER_FIELD_TWOFACTOR_DESC') ?>">
 					<?php echo JText::_('COM_USERS_USER_FIELD_TWOFACTOR_LABEL'); ?>
 				</label>
 			</div>
