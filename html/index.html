@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ExMachina - Web Vulnerability Testing Hub</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    background: radial-gradient(circle at center, #0a0a0a 0%, #000 90%);
+    color: #00ffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 2rem;
+    text-align: center;
+    border-bottom: 1px solid #00ffff33;
+  }
+  header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.2rem;
+    letter-spacing: 3px;
+  }
+  header p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+  }
+  #visual-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 2rem auto;
+    display: flex;
+    justify-content: center;
+  }
+  svg.lock-icon {
+    width: 150px;
+    height: 150px;
+    stroke: #00ffff;
+    fill: none;
+    stroke-width: 3;
+    animation: pulse 2.5s infinite ease-in-out;
+  }
+  @keyframes pulse {
+    0%, 100% {
+      stroke-opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      stroke-opacity: 0.6;
+      transform: scale(1.1);
+    }
+  }
+  #nav-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 2rem;
+    flex-wrap: wrap;
+  }
+  .card {
+    background: #001f26cc;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    width: 220px;
+    box-shadow: 0 0 15px #00ffff99;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    color: #00ffff;
+    text-decoration: none;
+  }
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px #00ffffcc;
+  }
+  .card h2 {
+    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
+  }
+  .card p {
+    font-size: 1rem;
+    line-height: 1.4;
+    opacity: 0.85;
+  }
+  footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #008080aa;
+  }
+  @media(max-width: 480px) {
+    .card {
+      width: 90%;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    header p {
+      font-size: 1rem;
+    }
+  }
+  @media(max-width:768px){
+    #visual-container {
+      max-width: 250px;
+      margin: 1.5rem auto;
+    }
+    .lock-icon {
+      width: 120px;
+      height: 120px;
+    }
+  }
+  @media (min-width: 769px) and (max-width:1024px) {
+    header h1 { font-size: 2.5rem; }
+    header p { font-size: 1.1rem; }
+    .card { width: 45%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ExMachina</h1>
+  <p>Your centralized hub for web vulnerability testing</p>
+</header>
+
+<div id="visual-container">
+  <svg class="lock-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" >
+    <rect x="16" y="28" width="32" height="28" rx="4" ry="4" />
+    <circle cx="32" cy="44" r="5" />
+    <path d="M20 28v-8a12 12 0 1 1 24 0v8" />
+  </svg>
+</div>
+
+<nav id="nav-cards">
+  <a class="card" href="http://dev.exmachina.com" target="_blank" rel="noopener noreferrer">
+    <h2>Development</h2>
+    <p>Explore the development playground for testing web vulnerabilities.</p>
+  </a>
+  <a class="card" href="http://blog.exmachina.com" target="_blank" rel="noopener noreferrer">
+    <h2>Blog</h2>
+    <p>Research, insights, and news on cybersecurity and testing techniques.</p>
+  </a>
+  <a class="card" href="http://dash.exmachina.com" target="_blank" rel="noopener noreferrer">
+    <h2>Dashboard</h2>
+    <p>Manage projects, track issues, and monitor testing progress.</p>
+  </a>
+  <a class="card" href="http://api.exmachina.com" target="_blank" rel="noopener noreferrer">
+    <h2>API</h2>
+    <p>An interface for automated vulnerability assessments and integrations.</p>
+  </a>
+</nav>
+
+<footer>
+  &copy; 2025 ExMachina Security Hub. All rights reserved.
+</footer>
+
+</body>
+</html>
